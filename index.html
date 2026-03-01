@@ -1,51 +1,61 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<title>23sekunder</title>
+<style>
+    body {
+        background: black;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin: 0;
+    }
+    h1 { font-size: 3rem; }
+    p { font-size: 1.5rem; }
+</style>
+</head>
+<body>
+
+<div>
+    <h1>23sekunder</h1>
+    <p id="info">Trykk SPACE for å starte</p>
+</div>
+
 <script>
 let startTime = null;
 let running = false;
 const goal = 23;
 const info = document.getElementById("info");
 
-async function loadScores() {
-    const res = await fetch("/scores");
-    const scores = await res.json();
-
-    let html = "<h2>Highscore</h2>";
-    scores.forEach((s, i) => {
-        html += `${i + 1}. ${s.name} – ${s.difference.toFixed(2)} sek<br>`;
-    });
-
-    info.innerHTML += "<br><br>" + html;
-}
-
-document.addEventListener("keydown", async function(e) {
+document.addEventListener("keydown", function(e) {
     if (e.code === "Space") {
         if (!running) {
+            // start
             startTime = Date.now();
             running = true;
             info.textContent = "Tidtaker startet...";
         } else {
+            // stopp
             let endTime = Date.now();
             let seconds = (endTime - startTime) / 1000;
-            let difference = Math.abs(seconds - goal);
-
-            let name = prompt("Skriv navnet ditt:");
-
-            await fetch("/scores", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ name, difference })
-            });
+            let difference = Math.abs(seconds - goal).toFixed(2);
 
             info.innerHTML = `
                 Du stoppet på ${seconds.toFixed(2)} sekunder.<br>
-                Avvik: ${difference.toFixed(2)} sekunder.<br><br>
-                Trykk SPACE for å spille igjen
+                Du var ${difference} sekunder fra målet.<br><br>
+                Trykk SPACE for å prøve igjen
             `;
 
             running = false;
-            loadScores();
         }
     }
 });
-
-loadScores();
 </script>
+
+</body>
+</html>
