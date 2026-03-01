@@ -2,28 +2,38 @@
 <html lang="no">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>23sekunder</title>
+
 <style>
-    body {
-        background: black;
-        color: white;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        font-family: Arial, sans-serif;
-        text-align: center;
-        margin: 0;
-    }
-    h1 { font-size: 3rem; }
-    p { font-size: 1.5rem; }
+body {
+    margin: 0;
+    background: black;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+h1 {
+    font-size: 3rem;
+}
+
+#info {
+    font-size: 1.5rem;
+    margin-top: 20px;
+}
 </style>
 </head>
+
 <body>
 
 <div>
     <h1>23sekunder</h1>
-    <p id="info">Trykk SPACE for å starte</p>
+    <div id="info">Trykk SPACE for å starte</div>
 </div>
 
 <script>
@@ -34,20 +44,21 @@ const info = document.getElementById("info");
 
 document.addEventListener("keydown", function(e) {
     if (e.code === "Space") {
+
         if (!running) {
-            // start
             startTime = Date.now();
             running = true;
             info.textContent = "Tidtaker startet...";
-        } else {
-            // stopp
-            let endTime = Date.now();
-            let seconds = (endTime - startTime) / 1000;
-            let difference = Math.abs(seconds - goal).toFixed(2);
+        } 
+        
+        else {
+            const endTime = Date.now();
+            const seconds = (endTime - startTime) / 1000;
+            const difference = Math.abs(seconds - goal);
 
             info.innerHTML = `
                 Du stoppet på ${seconds.toFixed(2)} sekunder.<br>
-                Du var ${difference} sekunder fra målet.<br><br>
+                Du var ${difference.toFixed(2)} sekunder fra målet.<br><br>
                 Trykk SPACE for å prøve igjen
             `;
 
